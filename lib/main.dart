@@ -75,8 +75,11 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  bool isFullscreen = false;
+
   void _toggleFullscreen() async {
-    await windowManager.setFullScreen(!(await windowManager.isFullScreen()));
+    isFullscreen = (await windowManager.isFullScreen());
+    await windowManager.setFullScreen(!isFullscreen);
   }
 
   String pad(int toBePadded, {int minLength = 2}) {
@@ -102,6 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
     int timeHours = (_counter / 3600).floor();
     int timeMins = (_counter / 60).floor() % 60;
     int timeSecs = _counter % 60;
+
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -147,7 +151,9 @@ class _MyHomePageState extends State<MyHomePage> {
           floatingActionButton: FloatingActionButton(
             onPressed: _toggleFullscreen,
             tooltip: 'Toggle Fullscreen',
-            child: const Icon(Icons.add),
+            child: isFullscreen
+                ? const Icon(Icons.fullscreen)
+                : const Icon(Icons.fullscreen_exit),
           ), // This trailing comma makes auto-formatting nicer for build methods.
           backgroundColor: const Color.fromARGB(0, 255, 255, 255),
         ));
